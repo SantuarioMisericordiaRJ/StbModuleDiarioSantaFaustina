@@ -1,5 +1,5 @@
 <?php
-//2021.04.28.00
+//2021.04.29.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -10,7 +10,7 @@ function Command_diario():void{
     $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $texto[1] . '.txt');
   else:
     $Bot->SendPhoto($Bot->ChatId(), __DIR__ . '/images/' . rand(1, 10) . '.png');
-    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . rand(80, 909) . '.txt');
+    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . rand(70, 909) . '.txt');
   endif;
   foreach(str_split($texto, TelegramBot::MsgSizeLimit) as $texto):
     $Bot->Send($Bot->ChatId(), $texto);
