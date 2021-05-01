@@ -1,13 +1,17 @@
 <?php
-//2021.04.30.00
+//2021.05.01.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
 function Command_diario():void{
   global $Bot;
+  $skip = [3];
   if($Bot->Parameters() === null):
     $Bot->SendPhoto($Bot->ChatId(), __DIR__ . '/images/' . rand(1, 10) . '.png');
-    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . rand(50, 909) . '.txt');
+    do{
+      $n = rand(1, 909);
+    }while(array_search($n, $skip) !== false);
+    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $n . '.txt');
   else:
     $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $Bot->Parameters() . '.txt');
   endif;
