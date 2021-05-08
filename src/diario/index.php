@@ -1,5 +1,5 @@
 <?php
-//2021.05.01.00
+//2021.05.07.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -9,7 +9,7 @@ function Command_diario():void{
   if($Bot->Parameters() === null):
     $Bot->SendPhoto($Bot->ChatId(), __DIR__ . '/images/' . rand(1, 10) . '.png');
     do{
-      $n = rand(1, 909);
+      $n = rand(1, 929);
     }while(array_search($n, $skip) !== false);
     $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $n . '.txt');
   else:
