@@ -1,11 +1,11 @@
 <?php
-//2021.07.05.00
+//2021.07.10.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
 function Command_diario():void{
   global $Bot;
-  $Max = 1299;
+  $Max = 1319;
   $skip = [3];
   if($Bot->Parameters() === null):
     $Bot->SendPhoto($Bot->ChatId(), __DIR__ . '/images/' . rand(1, 10) . '.png');
