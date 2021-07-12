@@ -4,6 +4,7 @@
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
 function Command_diario():void{
+  DebugTrace();
   global $Bot;
   $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main';
   $Max = 1359;
@@ -24,7 +25,7 @@ function Command_diario():void{
   elseif($Bot->Parameters() > $Max):
     $Bot->Send($Bot->ChatId(), "Por enquanto, só tenho até o número ". $Max);
   elseif(array_search($Bot->Parameters(), $Img) !== false):
-    $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $n . '.png');
+    $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $Bot->Parameters() . '.png');
     $Split = false;
   else:
     $texto = file_get_contents($Url . '/' . $Bot->Parameters() . '.txt');
