@@ -5,6 +5,7 @@
 
 function Command_diario():void{
   global $Bot;
+  $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main'
   $Max = 1359;
   $Skip = [3, 1323, 1353, 1355];
   $Img = [1355];
@@ -14,14 +15,19 @@ function Command_diario():void{
     do{
       $n = rand(1, $Max);
     }while(array_search($n, $Skip) !== false);
-    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $n . '.txt');
+    if(array_search($n, $Img) !== false):
+      $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $n . '.png');
+      $Split = false;
+    else:
+      $texto = file_get_contents($Url . '/' . $n . '.txt');
+    endif;
   elseif($Bot->Parameters() > $Max):
     $Bot->Send($Bot->ChatId(), "Por enquanto, só tenho até o número ". $Max);
-  elseif(array_search([$n, $Bot->Parameters()], $Img) !== false):
-    $Bot->SendPhoto($Bot->ChatId(), 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $n . '.png');
+  elseif(array_search($Bot->Parameters(), $Img) !== false):
+    $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $n . '.png');
     $Split = false;
   else:
-    $texto = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/' . $Bot->Parameters() . '.txt');
+    $texto = file_get_contents($Url . '/' . $Bot->Parameters() . '.txt');
   endif;
   if($Split):
     foreach(str_split($texto, TelegramBot::MsgSizeLimit) as $texto):
