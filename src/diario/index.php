@@ -5,7 +5,7 @@
 
 function Command_diario():void{
   global $Bot;
-  $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main'
+  $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main';
   $Max = 1359;
   $Skip = [3, 1323, 1353, 1355];
   $Img = [1355];
