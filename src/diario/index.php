@@ -1,5 +1,5 @@
 <?php
-//2021.07.20.00
+//2021.07.21.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -35,5 +35,9 @@ function Command_diario():void{
       $Bot->Send($Bot->ChatId(), $texto);
     endforeach;
   endif;
-  LogEvent('diario');
+  if($Bot->Parameters() === null):
+    LogEvent('diario', 'Aleatório: ' . $n);
+  else:
+    LogEvent('diario', $Bot->Parameters());
+  endif;
 }
