@@ -1,5 +1,5 @@
 <?php
-//2021.09.01.00
+//2021.09.03.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -7,8 +7,8 @@ function Command_diario():void{
   DebugTrace();
   global $Bot;
   $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main';
-  $Max = 1589;
-  $Skip = [3, 1323, 1353, 1355];
+  $Max = 1609;
+  $Skip = [3, 1323, 1353, 1355, 1590];
   $Img = [1355];
   $Split = true;
   if($Bot->Parameters() === null):
