@@ -1,5 +1,5 @@
 <?php
-//2021.09.06.01
+//2021.09.06.02
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -24,6 +24,7 @@ function Command_diario():void{
     endif;
   elseif($Bot->Parameters() > $Max):
     $Bot->Send($Bot->ChatId(), "Por enquanto, só tenho até o número ". $Max);
+    $Split = false;
   elseif(array_search($Bot->Parameters(), $Img) !== false):
     $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $Bot->Parameters() . '.png');
     $Split = false;
