@@ -1,5 +1,5 @@
 <?php
-//2021.09.17.00
+//2021.09.21.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -12,7 +12,7 @@ function Command_diario():void{
   $Img = [1355];
   $Split = true;
   if($Bot->Parameters() === null):
-    $Bot->SendPhoto($Bot->ChatId(), __DIR__ . '/images/' . rand(1, 10) . '.png');
+    $Bot->SendPhoto($Bot->ChatId(), dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png');
     do{
       $n = rand(1, $Max);
     }while(array_search($n, $Skip) !== false);
