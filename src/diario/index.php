@@ -1,9 +1,9 @@
 <?php
-//2021.09.21.00
+//2021.09.21.01
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
-function Command_diario():void{
+function Command_diario(TblCmd $Webhook):void{
   DebugTrace();
   global $Bot;
   $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
@@ -11,34 +11,35 @@ function Command_diario():void{
   $Skip = [3, 1323, 1353, 1355, 1590];
   $Img = [1355];
   $Split = true;
-  if($Bot->Parameters() === null):
-    $Bot->SendPhoto($Bot->ChatId(), dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png');
+  $Webhook->ReplyAction(TblActions::Typing);
+  if($Webhook->Parameters === null):
+    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png');
     do{
       $n = rand(1, $Max);
     }while(array_search($n, $Skip) !== false);
     if(array_search($n, $Img) !== false):
-      $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $n . '.png');
+      $Webhook->ReplyPhoto($Url . '/' . $n . '.png');
       $Split = false;
     else:
       $texto = file_get_contents($Url . '/' . $n . '.txt');
     endif;
-  elseif($Bot->Parameters() > $Max):
-    $Bot->Send($Bot->ChatId(), "Por enquanto, só tenho até o número ". $Max);
+  elseif($Webhook->Parameters > $Max):
+    $Webhook->ReplyMsg("Por enquanto, só tenho até o número ". $Max);
     $Split = false;
-  elseif(array_search($Bot->Parameters(), $Img) !== false):
-    $Bot->SendPhoto($Bot->ChatId(), $Url . '/' . $Bot->Parameters() . '.png');
+  elseif(array_search($Webhook->Parameters, $Img) !== false):
+    $Webhook->ReplyPhoto($Url . '/' . $Webhook->Parameters . '.png');
     $Split = false;
   else:
-    $texto = file_get_contents($Url . '/' . $Bot->Parameters() . '.txt');
+    $texto = file_get_contents($Url . '/' . $Webhook->Parameters . '.txt');
   endif;
   if($Split):
-    foreach(str_split($texto, TelegramBot::MsgSizeLimit) as $texto):
-      $Bot->Send($Bot->ChatId(), $texto);
+    foreach(str_split($texto, TblConstants::MsgSizeLimit) as $texto):
+      $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
     endforeach;
   endif;
-  if($Bot->Parameters() === null):
-    LogEvent('diario', 'Aleatório: ' . $n);
+  if($Webhook->Parameters === null):
+    LogEvent($Webhook, 'diario', 'Aleatório: ' . $n);
   else:
-    LogEvent('diario', $Bot->Parameters());
+    LogEvent($Webhook, 'diario', $Webhook->Parameters);
   endif;
 }
