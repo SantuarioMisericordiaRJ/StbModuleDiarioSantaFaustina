@@ -1,5 +1,5 @@
 <?php
-//2021.09.21.01
+//2021.09.21.02
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -13,7 +13,7 @@ function Command_diario(TblCmd $Webhook):void{
   $Split = true;
   $Webhook->ReplyAction(TblActions::Typing);
   if($Webhook->Parameters === null):
-    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png');
+    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png', null, null, null, null, null, false);
     do{
       $n = rand(1, $Max);
     }while(array_search($n, $Skip) !== false);
