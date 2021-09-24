@@ -1,5 +1,5 @@
 <?php
-//2021.09.23.00
+//2021.09.24.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -33,7 +33,7 @@ function Command_diario(TblCmd $Webhook):void{
     $texto = file_get_contents($Url . '/' . $Webhook->Parameters . '.txt');
   endif;
   if($Split):
-    foreach(str_split($texto, TblConstants::MsgSizeLimit) as $texto):
+    foreach(str_split($texto, TblConstants::LimitMsg) as $texto):
       $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
     endforeach;
   endif;
