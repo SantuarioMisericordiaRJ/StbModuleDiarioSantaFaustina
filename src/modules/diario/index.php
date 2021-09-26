@@ -1,11 +1,11 @@
 <?php
-//2021.09.24.00
+//2021.09.26.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
-function Command_diario(TblCmd $Webhook):void{
+function Command_diario():void{
   DebugTrace();
-  global $Bot;
+  global $Bot, $Webhook;
   $Url = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
   $Max = 1719;
   $Skip = [3, 1323, 1353, 1355, 1590];
@@ -38,8 +38,8 @@ function Command_diario(TblCmd $Webhook):void{
     endforeach;
   endif;
   if($Webhook->Parameters === null):
-    LogEvent($Webhook, 'diario', 'Aleatório: ' . $n);
+    LogEvent('diario', 'Aleatório: ' . $n);
   else:
-    LogEvent($Webhook, 'diario', $Webhook->Parameters);
+    LogEvent('diario', $Webhook->Parameters);
   endif;
 }
