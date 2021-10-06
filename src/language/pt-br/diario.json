@@ -5,6 +5,18 @@
       "diario",
       "Uma passagem do Diário de Santa Faustina",
       "diario"
+    ],
+    [
+      "user",
+      "diarioon",
+      "Receber todo dia uma passagem do Diário de Santa Faustina",
+      "diarioon"
+    ],
+    [
+      "user",
+      "diariooff",
+      "Cancelar o Diário de Santa Faustina",
+      "diariooff"
     ]
   ]
 }
