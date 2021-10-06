@@ -1,5 +1,5 @@
 <?php
-//2021.10.05.02
+//2021.10.06.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -78,7 +78,7 @@ function Cron_Diario():void{
   foreach($db[DiarioInscritos] as $user => $dia):
     $Bot->SendPhoto(
       $user,
-      dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png',
+      $GLOBALS['argv'][1] . '/modules/diario/images/' . rand(1, 10) . '.png',
       null,
       null,
       null,
