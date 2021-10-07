@@ -1,5 +1,5 @@
 <?php
-//2021.10.06.01
+//2021.10.07.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
@@ -49,8 +49,7 @@ function Command_diario():void{
 
 function Command_diarioon():void{
   DebugTrace();
-  global $Webhook, $DB;
-  $DB->CronAdd('Diario');
+  global $Webhook;
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
   $db[DiarioInscritos][$Webhook->User->Id] = time();
