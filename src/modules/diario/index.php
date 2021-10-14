@@ -1,10 +1,10 @@
 <?php
-//2021.10.11.00
+//2021.10.13.00
 //Protocol Corporation Ltda.
 //https://github.com/ProtocolLive/SimpleTelegramBot
 
 const DiarioUrl = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
-const DiarioMax = 1819;
+const DiarioMax = 1828;
 const DiarioSkip = [3, 1323, 1353, 1355, 1590];
 const DiarioImg = [1355];
 
