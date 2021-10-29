@@ -1,7 +1,7 @@
 <?php
-//2021.10.13.00
+//2021.10.29.00
 //Protocol Corporation Ltda.
-//https://github.com/ProtocolLive/SimpleTelegramBot
+//https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
 
 const DiarioUrl = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
 const DiarioMax = 1828;
@@ -33,7 +33,7 @@ function Command_diario():void{
     $Webhook->ReplyPhoto(DiarioUrl . '/' . $Webhook->Parameters . '.png');
     $Split = false;
   else:
-    $texto = file_get_contents(DiarioUrl . '/' . $Webhook->Parameters . '.txt');
+    $texto = file_get_contents(DiarioUrl . '/' . trim($Webhook->Parameters) . '.txt');
   endif;
   if($Split):
     foreach(str_split($texto, TblConstants::LimitMsg) as $texto):
