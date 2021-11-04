@@ -1,5 +1,5 @@
 <?php
-//2021.10.29.00
+//2021.11.04.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
 
@@ -74,7 +74,7 @@ function Cron_Diario():void{
   global $Bot;
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
-  foreach($db[DiarioInscritos] as $user => $dia):
+  foreach(($db[DiarioInscritos] ?? []) as $user => $dia):
     $Bot->SendPhoto(
       $user,
       $_GET['Site'] . '/modules/diario/images/' . rand(1, 10) . '.png',
