@@ -1,5 +1,5 @@
 <?php
-//2021.12.31.00
+//2022.01.01.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
 
@@ -11,6 +11,7 @@ const DiarioImg = [1355];
 const DiarioInscritos = 0;
 
 function Command_diario():void{
+  /**@var TblCmd $Webhook */
   DebugTrace();
   global $Webhook;
   $Split = true;
@@ -82,9 +83,10 @@ function Cron_Diario():void{
       null,
       null,
       null,
+      false,
       null,
-      null,
-      null,
+      true,
+      false,
       false
     );
     do{
