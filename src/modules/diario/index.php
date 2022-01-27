@@ -1,5 +1,5 @@
 <?php
-//2022.01.01.00
+//2022.01.27.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
 
@@ -17,7 +17,7 @@ function Command_diario():void{
   $Split = true;
   $Webhook->ReplyAction(TblActions::Typing);
   if($Webhook->Parameters === null):
-    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png', null, null, null, null, true, false, false);
+    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png', DisableNotification:true, Async:false);
     do{
       $n = rand(1, DiarioMax);
     }while(array_search($n, DiarioSkip) !== false);
@@ -79,15 +79,7 @@ function Cron_Diario():void{
     $Bot->SendPhoto(
       $user,
       $_GET['Site'] . '/modules/diario/images/' . rand(1, 10) . '.png',
-      null,
-      null,
-      null,
-      null,
-      false,
-      null,
-      true,
-      false,
-      false
+      DisableNotification:true
     );
     do{
       $n = rand(1, DiarioMax);
@@ -97,9 +89,7 @@ function Cron_Diario():void{
       $Bot->SendMsg(
         $user,
         $texto,
-        null,
-        null,
-        TblParse::Html
+        ParseMode:TblParse::Html
       );
     endforeach;
   endforeach;
