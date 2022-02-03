@@ -1,5 +1,5 @@
 <?php
-//2022.01.27.00
+//2022.02.03.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
 
@@ -78,8 +78,8 @@ function Cron_Diario():void{
   foreach(($db[DiarioInscritos] ?? []) as $user => $dia):
     $Bot->SendPhoto(
       $user,
-      $_GET['Site'] . '/modules/diario/images/' . rand(1, 10) . '.png',
-      DisableNotification:true
+      $_SERVER['argv']['BotUrl'] . '/modules/diario/images/' . rand(1, 10) . '.png',
+      DisableNotification: true
     );
     do{
       $n = rand(1, DiarioMax);
