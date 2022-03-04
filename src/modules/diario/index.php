@@ -1,7 +1,7 @@
 <?php
-//2022.02.03.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
+//2022.03.03.00
 
 const DiarioUrl = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
 const DiarioMax = 1828;
@@ -11,34 +11,55 @@ const DiarioImg = [1355];
 const DiarioInscritos = 0;
 
 function Command_diario():void{
-  /**@var TblCmd $Webhook */
+  /**
+   * @var TblCmd $Webhook
+   * @var TelegramBotLibrary $Bot
+   */
   DebugTrace();
-  global $Webhook;
+  global $Webhook, $Bot;
   $Split = true;
-  $Webhook->ReplyAction(TblActions::Typing);
+  $Bot->SendAction($Webhook->Chat->Id, TgChatAction::Typing);
   if($Webhook->Parameters === null):
-    $Webhook->ReplyPhoto(dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png', DisableNotification:true, Async:false);
+    $Bot->SendPhoto(
+      $Webhook->Chat->Id,
+      dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png',
+      DisableNotification: true,
+      Async: false
+    );
     do{
       $n = rand(1, DiarioMax);
     }while(array_search($n, DiarioSkip) !== false);
     if(array_search($n, DiarioImg) !== false):
-      $Webhook->ReplyPhoto(DiarioUrl . '/' . $n . '.png');
+      $Bot->SendPhoto(
+        $Webhook->Chat->Id,
+        DiarioUrl . '/' . $n . '.png'
+      );
       $Split = false;
     else:
       $texto = file_get_contents(DiarioUrl . '/' . $n . '.txt');
     endif;
   elseif($Webhook->Parameters > DiarioMax):
-    $Webhook->ReplyMsg("Por enquanto, só tenho até o número ". DiarioMax);
+    $Bot->SendText(
+      $Webhook->Chat->Id,
+      "Por enquanto, só tenho até o número ". DiarioMax
+    );
     $Split = false;
   elseif(array_search($Webhook->Parameters, DiarioImg) !== false):
-    $Webhook->ReplyPhoto(DiarioUrl . '/' . $Webhook->Parameters . '.png');
+    $Bot->SendPhoto(
+      $Webhook->Chat->Id,
+      DiarioUrl . '/' . $Webhook->Parameters . '.png'
+    );
     $Split = false;
   else:
     $texto = file_get_contents(DiarioUrl . '/' . trim($Webhook->Parameters) . '.txt');
   endif;
   if($Split):
-    foreach(str_split($texto, TblConstants::LimitMsg) as $texto):
-      $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
+    foreach(str_split($texto, TblConstants::LimitText) as $texto):
+      $Bot->SendText(
+        $Webhook->Chat->Id,
+        $texto,
+        ParseMode: TgParseModes::Html
+      );
     endforeach;
   endif;
   if($Webhook->Parameters === null):
@@ -49,30 +70,50 @@ function Command_diario():void{
 }
 
 function Command_diarioon():void{
-  DebugTrace();
+  /**
+   * @var TblCmd $Webhook
+   * @var TelegramBotLibrary $Bot
+   */
   global $Webhook;
+  DebugTrace();
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
   $db[DiarioInscritos][$Webhook->User->Id] = time();
   $DbDiario->Save($db);
-  $Webhook->ReplyMsg('Você <b>ativou</b> o envio diário de uma passagem aleatória do Diário de Santa Faustina. Para desativar, use o comando /diariooff.', null, null, TblParse::Html);
+  $Bot->SendText(
+    $Webhook->User->Id,
+    'Você <b>ativou</b> o envio diário de uma passagem aleatória do Diário de Santa Faustina. Para desativar, use o comando /diariooff.',
+    ParseMode: TgParseModes::Html
+  );
   LogEvent('diarioon');
 }
 
 function Command_diariooff():void{
+  /**
+   * @var TblCmd $Webhook
+   * @var TelegramBotLibrary $Bot
+   */
+  global $Webhook, $Bot;
   DebugTrace();
-  global $Webhook;
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
   unset($db[DiarioInscritos][$Webhook->User->Id]);
   $DbDiario->Save($db);
-  $Webhook->ReplyMsg('Você <b>desativou</b> o envio diário de uma passagem aleatória do Diário de Santa Faustina. Para re-ativar, use o comando /diarioon.', null, null, TblParse::Html);
+  $Bot->SendText(
+    $Webhook->User->Id,
+    'Você <b>desativou</b> o envio diário de uma passagem aleatória do Diário de Santa Faustina. Para re-ativar, use o comando /diarioon.',
+    ParseMode: TgParseModes::Html
+  );
   LogEvent('diariooff');
 }
 
 function Cron_Diario():void{
-  DebugTrace();
+  /**
+   * @var TblCmd $Webhook
+   * @var TelegramBotLibrary $Bot
+   */
   global $Bot;
+  DebugTrace();
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
   foreach(($db[DiarioInscritos] ?? []) as $user => $dia):
@@ -85,11 +126,11 @@ function Cron_Diario():void{
       $n = rand(1, DiarioMax);
     }while(array_search($n, DiarioSkip) !== false);
     $texto = file_get_contents(DiarioUrl . '/' . $n . '.txt');
-    foreach(str_split($texto, TblConstants::LimitMsg) as $texto):
-      $Bot->SendMsg(
+    foreach(str_split($texto, TblConstants::LimitText) as $texto):
+      $Bot->SendText(
         $user,
         $texto,
-        ParseMode:TblParse::Html
+        ParseMode: TgParseModes::Html
       );
     endforeach;
   endforeach;
