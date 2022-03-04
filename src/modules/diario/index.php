@@ -1,7 +1,7 @@
 <?php
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleDiarioSantaFaustina
-//2022.03.03.00
+//2022.03.04.01
 
 const DiarioUrl = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/DiarioSantaFaustina/main/src';
 const DiarioMax = 1828;
@@ -20,20 +20,12 @@ function Command_diario():void{
   $Split = true;
   $Bot->SendAction($Webhook->Chat->Id, TgChatAction::Typing);
   if($Webhook->Parameters === null):
-    $Bot->SendPhoto(
-      $Webhook->Chat->Id,
-      dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . rand(1, 10) . '.png',
-      DisableNotification: true,
-      Async: false
-    );
+    DiarioEnviaFoto(rand(0, 9));
     do{
       $n = rand(1, DiarioMax);
     }while(array_search($n, DiarioSkip) !== false);
     if(array_search($n, DiarioImg) !== false):
-      $Bot->SendPhoto(
-        $Webhook->Chat->Id,
-        DiarioUrl . '/' . $n . '.png'
-      );
+      DiarioEnviaFoto($n);
       $Split = false;
     else:
       $texto = file_get_contents(DiarioUrl . '/' . $n . '.txt');
@@ -45,10 +37,7 @@ function Command_diario():void{
     );
     $Split = false;
   elseif(array_search($Webhook->Parameters, DiarioImg) !== false):
-    $Bot->SendPhoto(
-      $Webhook->Chat->Id,
-      DiarioUrl . '/' . $Webhook->Parameters . '.png'
-    );
+    DiarioEnviaFoto($Webhook->Parameters);
     $Split = false;
   else:
     $texto = file_get_contents(DiarioUrl . '/' . trim($Webhook->Parameters) . '.txt');
@@ -117,11 +106,7 @@ function Cron_Diario():void{
   $DbDiario = new StbDb(DirToken, 'Diario');
   $db = $DbDiario->Load();
   foreach(($db[DiarioInscritos] ?? []) as $user => $dia):
-    $Bot->SendPhoto(
-      $user,
-      $_SERVER['argv']['BotUrl'] . '/modules/diario/images/' . rand(1, 10) . '.png',
-      DisableNotification: true
-    );
+    DiarioEnviaFoto(rand(0, 9));
     do{
       $n = rand(1, DiarioMax);
     }while(array_search($n, DiarioSkip) !== false);
@@ -134,4 +119,34 @@ function Cron_Diario():void{
       );
     endforeach;
   endforeach;
+}
+
+function DiarioEnviaFoto(int $Id){
+  /**
+   * @var TblCmd $Webhook
+   * @var TelegramBotLibrary $Bot
+   */
+  global $Webhook, $Bot;
+  $File = __DIR__ . '/cache.json';
+  if(is_file($File)):
+    $Cache = file_get_contents($File);
+    $Cache = json_decode($Cache, true);
+  else:
+    $Cache = [];
+  endif;
+  if(isset($Cache[$Id])):
+    $return = $Bot->SendPhoto(
+      $Webhook->Chat->Id,
+      $Cache[$Id],
+      DisableNotification: true
+    );
+  else:
+    $return = $Bot->SendPhoto(
+      $Webhook->Chat->Id,
+      dirname($_SERVER['SCRIPT_URI'], 2) . '/modules/diario/images/' . $Id . '.jpg',
+      DisableNotification: true
+    );
+    $Cache[$Id] = $return->Photo[count($return->Photo) - 1]->Id;
+    file_put_contents($File, json_encode($Cache));
+  endif;
 }
